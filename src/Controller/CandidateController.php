@@ -28,11 +28,8 @@ class CandidateController extends AbstractController
     public function edit(Request $request,UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $filesystem = new Filesystem();
         $candidate = $user->getCandidate();
-        
-        
-        
+              
         $form = $this->createForm(CandidateType::class, $candidate);
         $form->handleRequest($request);
       
@@ -40,10 +37,8 @@ class CandidateController extends AbstractController
             $fileImage = $form->get('profil_picture')->getData();
             $fileCv = $form->get('cv')->getData();
            if($fileImage != null){
-            
             $filename = $candidate->getId() . '.' . $fileImage->getClientOriginalExtension();
             $fileImage->move($this->getParameter('kernel.project_dir') . '/public/upload/image', $filename);
-            
             $candidate->setProfilPicture($filename);
            }
            if($fileCv != null){
